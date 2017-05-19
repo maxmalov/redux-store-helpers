@@ -1,0 +1,42 @@
+{
+  "name": "redux-store-helpers",
+  "version": "1.0.0",
+  "description": "Helpers for redux store reducers and sagas",
+  "author": "Sergey Martynov <martynovs@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/martynovs/redux-store-helpers#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martynovs/redux-store-helpers.git"
+  },
+  "keywords": [
+    "redux",
+    "helpers",
+    "reducer",
+    "saga"
+  ],
+  "scripts": {
+    "lint": "eslint es",
+    "build": "babel es --out-dir lib",
+    "prepublish": "npm-run-all lint build"
+  },
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "dependencies": {
+    "invariant": "^2.2.2",
+    "redux": "^3.6.0",
+    "redux-actions": "^2.0.3",
+    "redux-saga": "^0.15.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-transform-export-extensions": "6.22.0",
+    "babel-plugin-transform-object-rest-spread": "6.23.0",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-preset-env": "^1.4.0",
+    "eslint": "^3.19.0",
+    "npm-run-all": "^4.0.2"
+  }
+}

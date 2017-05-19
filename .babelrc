@@ -1,0 +1,14 @@
+{
+  "compact": false,
+  "presets": [
+    ["env", {
+      "browsers": "last 5 versions",
+      "useBuiltIns": true
+    }]
+  ],
+  "plugins": [
+    "transform-export-extensions",
+    ["transform-object-rest-spread", { "useBuiltIns": true }],
+    ["transform-runtime", { "helpers": false, "polyfill": false }]
+  ]
+}
