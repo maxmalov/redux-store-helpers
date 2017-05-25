@@ -1,6 +1,6 @@
 import invariant from 'invariant';
-import { bindActionCreators } from 'redux';
-import { connect as reduxConnect } from 'react-redux';
+import bindActionCreators from 'redux/es/bindActionCreators';
+import reduxConnect from 'react-redux/es/connect/connect';
 import { isObject, isFunction } from './is';
 
 export default function connect(props, actions, options) {

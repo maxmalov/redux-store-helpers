@@ -1,7 +1,7 @@
 import invariant from 'invariant';
-import { createAction } from 'redux-actions';
-import { put } from 'redux-saga/lib/effects';
-import { takeLatest, takeEvery, fork } from 'redux-saga/lib/internal/io';
+import createAction from 'redux-actions/es/createAction';
+import { put } from 'redux-saga/es/effects';
+import { takeLatest, takeEvery, fork } from 'redux-saga/es/internal/io';
 import { isFunction } from './is';
 
 export function createFetchAction(type, payloadCreator) {

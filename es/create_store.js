@@ -1,10 +1,8 @@
-import {
-  createStore as reduxCreateStore,
-  compose as reduxCompose,
-  applyMiddleware,
-} from 'redux';
-
-import createSagaMiddleware, { END as END_SAGAS } from 'redux-saga';
+import reduxCreateStore from 'redux/es/createStore';
+import applyMiddleware from 'redux/es/applyMiddleware';
+import reduxCompose from 'redux/es/compose';
+import createSagaMiddleware from 'redux-saga/es/internal/middleware';
+import { END as END_SAGAS } from 'redux-saga/es/internal/channel';
 
 export default function createStore(rootReducer, initialState, {
   compose = reduxCompose,
