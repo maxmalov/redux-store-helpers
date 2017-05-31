@@ -1,6 +1,6 @@
 {
   "name": "redux-store-helpers",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Helpers for redux store reducers and sagas",
   "author": "Sergey Martynov <martynovs@gmail.com>",
   "license": "MIT",

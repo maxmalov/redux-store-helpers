@@ -1,7 +1,6 @@
 import invariant from 'invariant';
 import createAction from 'redux-actions/es/createAction';
-import { put } from 'redux-saga/es/effects';
-import { takeLatest, takeEvery, fork } from 'redux-saga/es/internal/io';
+import { put, takeLatest, takeEvery, fork, all } from 'redux-saga/es/internal/io';
 import { isFunction } from './is';
 
 export function createFetchAction(type, payloadCreator) {
@@ -9,7 +8,7 @@ export function createFetchAction(type, payloadCreator) {
 }
 
 export function actionDispatcher(actionCreator, payload) {
-  invariant(isFunction(actionCreator), 'actionCreator should be function');
+  invariant(isFunction(actionCreator), '[actionDispatcher]: actionCreator should be function');
   const transformer = isFunction(payload) ? payload : () => payload;
   return function* actionDispatcherSaga(triggerAction) {
     yield put(actionCreator(transformer(triggerAction)));
@@ -22,7 +21,7 @@ export function composeSaga(saga, options) {
     ? saga
     : Object.keys(saga).map(type => composeActionHandler(type, saga[type], options));
   return function* runSaga() {
-    yield handlers.map(fn => fork(fn));
+    yield all(handlers.map(fn => fork(fn)));
   };
 }
 
@@ -31,10 +30,10 @@ export function composeActionHandler(type, handler, options) {
   const matchEvery = matchAction(type, false, options);
   const args = Array.isArray(handler) ? handler : [handler];
   return function* handleAction() {
-    yield [
+    yield all([
       takeLatest(matchLatest, ...args),
       takeEvery(matchEvery, ...args),
-    ];
+    ]);
   };
 }
 
