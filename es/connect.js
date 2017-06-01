@@ -1,28 +1,27 @@
 import invariant from 'invariant';
+import mapValues from 'lodash/mapValues';
 import bindActionCreators from 'redux/es/bindActionCreators';
 import reduxConnect from 'react-redux/es/connect/connect';
 import { isObject, isFunction } from './is';
 
-export default function connect(props, actions, options) {
-  return reduxConnect(bindProps(props), actions && bindActions(actions), undefined, options);
+export default function connect(getters, actions, options) {
+  const propsBinder = isFunction(getters) ? getters : bindProps(getters);
+  const actionsBinder = actions && (isFunction(actions) ? actions : bindActions(actions));
+  return reduxConnect(propsBinder, actionsBinder, undefined, options);
 }
 
 export function connectActions(actions, options) {
-  return reduxConnect(null, bindActions(actions), undefined, options);
+  const actionsBinder = isFunction(actions) ? actions : bindActions(actions);
+  return reduxConnect(null, actionsBinder, undefined, options);
 }
 
-export function bindProps(props) {
-  invariant(isObject(props), '[connect]: getters should be an object');
-  return function bindStateToProps(state) {
-    const boundProps = {};
-    Object.keys(props).forEach((prop) => {
-      const getter = props[prop];
-      invariant(isFunction(getter), '[connect]: getter %s should be function', prop);
-      boundProps[prop] = getter.length > 1
-        ? (...args) => getter(state, ...args)
-        : getter(state);
-    });
-    return boundProps;
+export function bindProps(getters) {
+  invariant(isObject(getters), '[connect]: getters should be an object');
+  return function bindStateToProps(state, ownProps) {
+    return mapValues(getters, (getter, key) => {
+      invariant(isFunction(getter), '[connect]: getter %s should be function', key);
+      return getter(state, ownProps);
+    })
   };
 }
 
