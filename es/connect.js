@@ -26,8 +26,8 @@ export function bindProps(getters) {
 }
 
 export function bindActions(actions) {
-  invariant(isObject(actions), '[connect]: actions should be an object');
-  return function bindActionsToDispatch(dispatch) {
-    return bindActionCreators(actions, dispatch);
-  };
+  invariant(isObject(actions) || isFunction(actions), '[connect]: actions should be an object of function');
+  return isFunction(actions)
+    ? (dispatch, props) => bindActionCreators(actions(props), dispatch)
+    : (dispatch) => bindActionCreators(actions, dispatch);
 }
