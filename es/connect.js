@@ -6,13 +6,12 @@ import { isObject, isFunction } from './is';
 
 export default function connect(getters, actions, options) {
   const propsBinder = isFunction(getters) ? getters : bindProps(getters);
-  const actionsBinder = actions && (isFunction(actions) ? actions : bindActions(actions));
+  const actionsBinder = actions && bindActions(actions);
   return reduxConnect(propsBinder, actionsBinder, undefined, options);
 }
 
 export function connectActions(actions, options) {
-  const actionsBinder = isFunction(actions) ? actions : bindActions(actions);
-  return reduxConnect(null, actionsBinder, undefined, options);
+  return reduxConnect(null, bindActions(actions), undefined, options);
 }
 
 export function bindProps(getters) {
@@ -28,6 +27,6 @@ export function bindProps(getters) {
 export function bindActions(actions) {
   invariant(isObject(actions) || isFunction(actions), '[connect]: actions should be an object of function');
   return isFunction(actions)
-    ? (dispatch, props) => bindActionCreators(actions(props), dispatch)
+    ? (dispatch, props) => bindActionCreators(actions(props, dispatch), dispatch)
     : (dispatch) => bindActionCreators(actions, dispatch);
 }
