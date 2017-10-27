@@ -1,5 +1,4 @@
 import invariant from 'invariant';
-import mapValues from 'lodash/mapValues';
 import bindActionCreators from 'redux/es/bindActionCreators';
 import reduxConnect from 'react-redux/es/connect/connect';
 import { isObject, isFunction } from './is';
@@ -16,16 +15,17 @@ export function connectActions(actions, options) {
 
 export function bindProps(getters) {
   invariant(isObject(getters), '[connect]: getters should be an object');
+  const keys = Object.keys(getters);
+  keys.each(key => invariant(isFunction(getters[key]), '[connect]: getter %s should be function', key));
   return function bindStateToProps(state, ownProps) {
-    return mapValues(getters, (getter, key) => {
-      invariant(isFunction(getter), '[connect]: getter %s should be function', key);
-      return getter(state, ownProps);
-    })
+    const bound = {};
+    keys.each(key => (bound[key] = getters[key](state, ownProps)));
+    return bound;
   };
 }
 
 export function bindActions(actions) {
-  invariant(isObject(actions) || isFunction(actions), '[connect]: actions should be an object of function');
+  invariant(isObject(actions) || isFunction(actions), '[connect]: actions should be an object or function');
   return isFunction(actions)
     ? (dispatch, props) => bindActionCreators(actions(props, dispatch), dispatch)
     : (dispatch) => bindActionCreators(actions, dispatch);
