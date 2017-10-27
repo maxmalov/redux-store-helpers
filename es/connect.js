@@ -16,10 +16,10 @@ export function connectActions(actions, options) {
 export function bindProps(getters) {
   invariant(isObject(getters), '[connect]: getters should be an object');
   const keys = Object.keys(getters);
-  keys.each(key => invariant(isFunction(getters[key]), '[connect]: getter %s should be function', key));
+  keys.forEach(key => invariant(isFunction(getters[key]), '[connect]: getter %s should be function', key));
   return function bindStateToProps(state, ownProps) {
     const bound = {};
-    keys.each(key => (bound[key] = getters[key](state, ownProps)));
+    keys.forEach(key => (bound[key] = getters[key](state, ownProps)));
     return bound;
   };
 }
