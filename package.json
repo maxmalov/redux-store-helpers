@@ -23,7 +23,7 @@
   "main": "lib/index.js",
   "module": "es/index.js",
   "dependencies": {
-    "invariant": "^2.2",
+    "invariant": "^2.2"
   },
   "peerDependencies": {
     "react-redux": "^5.0",
